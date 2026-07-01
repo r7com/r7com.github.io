@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Implementação de Anúncios | Ad Manager</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&family=Roboto+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+
+  <!-- GPT Setup -->
+  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+  <script>
+    window.googletag = window.googletag || { cmd: [] };
+
+    googletag.cmd.push(function () {
+      // ── Size Mappings ──────────────────────────────
+      var mapHeader = googletag.sizeMapping()
+        .addSize([970, 0], [[970, 250], [970, 90], [728, 90]])
+        .addSize([728, 0], [[728, 90]])
+        .addSize([0, 0], [[320, 100], [300, 100], [320, 50], [300, 50]])
+        .build();
+
+      var mapLeaderboard = googletag.sizeMapping()
+        .addSize([970, 0], [[970, 90], [728, 90]])
+        .addSize([728, 0], [[728, 90]])
+        .addSize([0, 0], [[320, 100], [300, 100], [320, 50], [300, 50]])
+        .build();
+
+      var mapSidebar = googletag.sizeMapping()
+        .addSize([768, 0], [[300, 600], [300, 250]])
+        .addSize([0, 0], [[300, 250]])
+        .build();
+
+      var mapRetangulo = googletag.sizeMapping()
+        .addSize([0, 0], [[300, 250], [336, 280]])
+        .build();
+
+      var mapMobile = googletag.sizeMapping()
+        .addSize([768, 0], [])
+        .addSize([0, 0], [[320, 100], [300, 100], [320, 50], [300, 50]])
+        .build();
+
+      // ── Slots ──────────────────────────
+      googletag.defineSlot('/7542/parceiros/ofuxico', [[970, 250], [970, 90], [728, 90], [320, 100], [300, 100], [320, 50], [300, 50]], 'ad-header').defineSizeMapping(mapHeader).addService(googletag.pubads());
+      googletag.defineSlot('/7542/parceiros/ofuxico', [[300, 250], [336, 280]], 'ad-conteudo').defineSizeMapping(mapRetangulo).addService(googletag.pubads());
+      googletag.defineSlot('/7542/parceiros/ofuxico', [[300, 600], [300, 250]], 'ad-sidebar').defineSizeMapping(mapSidebar).addService(googletag.pubads());
+      googletag.defineSlot('/7542/parceiros/ofuxico', [[728, 90], [970, 90], [320, 100], [300, 100], [320, 50], [300, 50]], 'ad-rodape').defineSizeMapping(mapLeaderboard).addService(googletag.pubads());
+      googletag.defineSlot('/7542/parceiros/ofuxico', [[320, 100], [300, 100], [320, 50], [300, 50]], 'ad-mobile').defineSizeMapping(mapMobile).addService(googletag.pubads());
+
+      // ── Configurações Gerais ────────────────────────
+      googletag.pubads().enableSingleRequest();
+
+      googletag.pubads().set('page_url', 'http://127.0.0.1:5500/');
+
+      googletag.pubads().collapseEmptyDivs();
+
+      // Ativa os serviços após mapear tudo
+      googletag.enableServices();
+
+    });
+  </script>
+</head>
+
+<body>
+
+  <!-- TOP NAV -->
+  <header class="gd-topnav">
+    <a class="gd-topnav__brand" href="#">
+      <img src="assets/images/wpp_logo.webp" alt="Logo" class="gd-topnav__logo-img">
+    </a>
+    <div class="gd-topnav__inner">
+      <a class="gd-topnav__logo" href="#">
+        <span class="gd-topnav__product">Ad Manager</span>
+        <span class="gd-topnav__sep">›</span>
+        <select class="gd-topnav__section" onchange="location = this.value;">
+          <option value="index.html">Implementação</option>
+          <option value="preview.html">Preview</option>
+          <option value="preview-post.html">Preview Post</option>
+        </select>
+      </a>
+      <nav class="gd-topnav__links">
+        <a href="https://support.google.com/admanager/answer/1100453?hl=pt-br" target="_blank">Referência</a>
+        <a href="https://developers.google.com/publisher-tag/guides/get-started" target="_blank">GPT Docs</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="gd-layout">
+
+    <!-- LEFT NAV -->
+    <nav class="gd-sidenav">
+      <div class="gd-sidenav__section-label">Nesta página</div>
+      <ul class="gd-sidenav__list">
+        <li><a href="#section-overview" class="gd-sidenav__link active">Visão geral</a></li>
+        <li><a href="#section-head" class="gd-sidenav__link">Código do &lt;head&gt;</a></li>
+        <li><a href="#section-slots" class="gd-sidenav__link">Slots de anúncio</a></li>
+        <li class="gd-sidenav__nested"><a href="#slot-header" class="gd-sidenav__link">Header</a></li>
+        <li class="gd-sidenav__nested"><a href="#slot-conteudo" class="gd-sidenav__link">Conteúdo</a></li>
+        <li class="gd-sidenav__nested"><a href="#slot-sidebar" class="gd-sidenav__link">Sidebar</a></li>
+        <li class="gd-sidenav__nested"><a href="#slot-mobile" class="gd-sidenav__link">Mobile</a></li>
+        <li class="gd-sidenav__nested"><a href="#slot-rodape" class="gd-sidenav__link">Rodapé</a></li>
+        <li><a href="#section-reference" class="gd-sidenav__link">Referências</a></li>
+      </ul>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="gd-main">
+
+      <!-- BREADCRUMB -->
+      <nav class="gd-breadcrumb">
+        <a href="#"></a>
+        <span>›</span>
+        <a href="#">Ad Manager</a>
+        <span>›</span>
+        <span>Guia de implementação</span>
+      </nav>
+
+      <!-- PAGE TITLE -->
+      <section id="section-overview">
+        <h1 class="gd-h1">Guia de implementação de anúncios</h1>
+        <p class="gd-subtitle">Google Publisher Tag<code class="gd-inline-code"></code></p>
+
+        <div class="gd-callout gd-callout--note">
+          <span class="gd-callout__icon">ℹ️</span>
+          <div>
+            <strong>Nota:</strong> Todo o script de configuração deve ser inserido <strong>uma única vez</strong> no
+            <code class="gd-inline-code">&lt;head&gt;</code> da página, antes de qualquer chamada a <code
+              class="gd-inline-code">googletag.display()</code>.
+          </div>
+        </div>
+
+        <h2 class="gd-h2">Slots disponíveis</h2>
+        <p>Esta implementação define cinco slots responsivos, cada um com size mappings adaptados ao viewport.</p>
+
+        <div class="gd-table-wrap">
+          <table class="gd-table">
+            <thead>
+              <tr>
+                <th>ID do slot</th>
+                <th>Posição</th>
+                <th>Desktop</th>
+                <th>Mobile</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ad-header</code></td>
+                <td>Topo da página</td>
+                <td>970×250 · 970×90 · 728×90</td>
+                <td>320×100 · 320×50</td>
+              </tr>
+              <tr>
+                <td><code>ad-conteudo</code></td>
+                <td>Meio do artigo</td>
+                <td>300×250 · 336×280</td>
+                <td>300×250 · 336×280</td>
+              </tr>
+              <tr>
+                <td><code>ad-sidebar</code></td>
+                <td>Barra lateral</td>
+                <td>300×600 · 300×250</td>
+                <td>300×250</td>
+              </tr>
+              <tr>
+                <td><code>ad-mobile</code></td>
+                <td>Exclusivo mobile</td>
+                <td>—</td>
+                <td>320×100 · 320×50</td>
+              </tr>
+              <tr>
+                <td><code>ad-rodape</code></td>
+                <td>Rodapé da página</td>
+                <td>970×90 · 728×90</td>
+                <td>320×100 · 320×50</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CODE SECTION: HEAD -->
+      <section id="section-head">
+        <h2 class="gd-h2">1. Código do <code class="gd-inline-code">&lt;head&gt;</code></h2>
+        <p>Cole este bloco inteiro dentro do <code class="gd-inline-code">&lt;head&gt;</code> do seu HTML. Substitua
+          <code class="gd-inline-code">{{CODE_NAME}}</code> pelo identificador do seu site (ex: <em>meusite</em>).
+        </p>
+
+        <!-- Code name input -->
+        <div class="gd-input-row">
+          <label class="gd-label" for="cv-mcm-code">MCM Code</label>
+          <div class="gd-input-wrap">
+            <input id="cv-mcm-code" class="gd-input" type="text" placeholder="ex: 123456789"
+              oninput="updateMCMCode(this.value)">
+            <span class="gd-input-hint">Preenche <code>{{MCM_CODE}}</code> no ad unit</span>
+          </div>
+        </div>
+
+        <div class="gd-input-row">
+          <label class="gd-label" for="cv-code-name">Code Name</label>
+          <div class="gd-input-wrap">
+            <input id="cv-code-name" class="gd-input" type="text" placeholder="ex: meusite"
+              oninput="updateCodeName(this.value)">
+            <span class="gd-input-hint">Preenche <code>{{CODE_NAME}}</code> nos trechos abaixo</span>
+          </div>
+        </div>
+
+        <div class="gd-input-row">
+          <label class="gd-label" for="cv-page-url">Page URL</label>
+          <div class="gd-input-wrap">
+            <input id="cv-page-url" class="gd-input" type="text" placeholder="ex: meusite.com.br"
+              oninput="updatePageUrl(this.value)">
+            <span class="gd-input-hint">Preenche <code>{{PAGE_URL}}</code> em
+              <code>pubads().set('page_url', …)</code></span>
+          </div>
+        </div>
+
+        <div class="gd-code-block" id="block-head">
+          <div class="gd-code-header">
+            <div class="gd-code-tabs">
+              <button class="gd-code-tab active" id="tab-head-btn" onclick="switchMainTab('head', this)">HTML
+                (head)</button>
+              <!-- <button class="gd-code-tab" id="tab-body-btn" onclick="switchMainTab('body', this)">HTML (body)</button> -->
+            </div>
+            <button class="gd-copy-btn" id="main-copy-btn" onclick="copyActivePanel(this)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <div id="panel-head-content" class="gd-tab-panel active">
+            <pre class="gd-pre"><span class="cm">&lt;!-- Colar no &lt;head&gt; — uma única vez --&gt;</span>
+<span class="kw">&lt;script</span> <span class="at">async</span> <span class="at">src</span>=<span class="st">"https://securepubads.g.doubleclick.net/tag/js/gpt.js"</span> <span class="at">crossorigin</span>=<span class="st">"anonymous"</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script&gt;</span>
+<span class="fn">window</span>.googletag = <span class="fn">window</span>.googletag || { cmd: [] };
+
+googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span> () {
+
+  <span class="cm">// ── Size Mappings ──────────────────────────────</span>
+  <span class="kw">var</span> mapHeader = googletag.<span class="fn">sizeMapping</span>()
+    .<span class="fn">addSize</span>([<span class="nu">970</span>, <span class="nu">0</span>], [[<span class="nu">970</span>, <span class="nu">250</span>], [<span class="nu">970</span>, <span class="nu">90</span>], [<span class="nu">728</span>, <span class="nu">90</span>]])
+    .<span class="fn">addSize</span>([<span class="nu">728</span>, <span class="nu">0</span>], [[<span class="nu">728</span>, <span class="nu">90</span>]])
+    .<span class="fn">addSize</span>([<span class="nu">0</span>,   <span class="nu">0</span>], [[<span class="nu">320</span>, <span class="nu">100</span>], [<span class="nu">300</span>, <span class="nu">100</span>], [<span class="nu">320</span>, <span class="nu">50</span>], [<span class="nu">300</span>, <span class="nu">50</span>]])
+    .<span class="fn">build</span>();
+
+  <span class="kw">var</span> mapLeaderboard = googletag.<span class="fn">sizeMapping</span>()
+    .<span class="fn">addSize</span>([<span class="nu">970</span>, <span class="nu">0</span>], [[<span class="nu">970</span>, <span class="nu">90</span>], [<span class="nu">728</span>, <span class="nu">90</span>]])
+    .<span class="fn">addSize</span>([<span class="nu">728</span>, <span class="nu">0</span>], [[<span class="nu">728</span>, <span class="nu">90</span>]])
+    .<span class="fn">addSize</span>([<span class="nu">0</span>,   <span class="nu">0</span>], [[<span class="nu">320</span>, <span class="nu">100</span>], [<span class="nu">300</span>, <span class="nu">100</span>], [<span class="nu">320</span>, <span class="nu">50</span>], [<span class="nu">300</span>, <span class="nu">50</span>]])
+    .<span class="fn">build</span>();
+
+  <span class="kw">var</span> mapSidebar = googletag.<span class="fn">sizeMapping</span>()
+    .<span class="fn">addSize</span>([<span class="nu">768</span>, <span class="nu">0</span>], [[<span class="nu">300</span>, <span class="nu">600</span>], [<span class="nu">300</span>, <span class="nu">250</span>]])
+    .<span class="fn">addSize</span>([<span class="nu">0</span>,   <span class="nu">0</span>], [[<span class="nu">300</span>, <span class="nu">250</span>]])
+    .<span class="fn">build</span>();
+
+  <span class="kw">var</span> mapRetangulo = googletag.<span class="fn">sizeMapping</span>()
+    .<span class="fn">addSize</span>([<span class="nu">0</span>, <span class="nu">0</span>], [[<span class="nu">300</span>, <span class="nu">250</span>], [<span class="nu">336</span>, <span class="nu">280</span>]])
+    .<span class="fn">build</span>();
+
+  <span class="kw">var</span> mapMobile = googletag.<span class="fn">sizeMapping</span>()
+    .<span class="fn">addSize</span>([<span class="nu">768</span>, <span class="nu">0</span>], [])
+    .<span class="fn">addSize</span>([<span class="nu">0</span>,   <span class="nu">0</span>], [[<span class="nu">320</span>, <span class="nu">100</span>], [<span class="nu">300</span>, <span class="nu">100</span>], [<span class="nu">320</span>, <span class="nu">50</span>], [<span class="nu">300</span>, <span class="nu">50</span>]])
+    .<span class="fn">build</span>();
+
+  <span class="cm">// ── Slots ──────────────────────────────────────</span>
+  googletag.<span class="fn">defineSlot</span>(<span class="st">'/7542,<span class="mcm-network-val">{{MCM_CODE}}</span>/parceiros/<span class="code-name-val">{{CODE_NAME}}</span>'</span>,
+    [[<span class="nu">970</span>, <span class="nu">250</span>], [<span class="nu">970</span>, <span class="nu">90</span>], [<span class="nu">728</span>, <span class="nu">90</span>], [<span class="nu">320</span>, <span class="nu">100</span>], [<span class="nu">300</span>, <span class="nu">100</span>], [<span class="nu">320</span>, <span class="nu">50</span>], [<span class="nu">300</span>, <span class="nu">50</span>]],
+    <span class="st">'ad-header'</span>)
+    .<span class="fn">defineSizeMapping</span>(mapHeader).<span class="fn">addService</span>(googletag.<span class="fn">pubads</span>());
+
+  googletag.<span class="fn">defineSlot</span>(<span class="st">'/7542,<span class="mcm-network-val">{{MCM_CODE}}</span>/parceiros/<span class="code-name-val">{{CODE_NAME}}</span>'</span>,
+    [[<span class="nu">300</span>, <span class="nu">250</span>], [<span class="nu">336</span>, <span class="nu">280</span>]],
+    <span class="st">'ad-conteudo'</span>)
+    .<span class="fn">defineSizeMapping</span>(mapRetangulo).<span class="fn">addService</span>(googletag.<span class="fn">pubads</span>());
+
+  googletag.<span class="fn">defineSlot</span>(<span class="st">'/7542,<span class="mcm-network-val">{{MCM_CODE}}</span>/parceiros/<span class="code-name-val">{{CODE_NAME}}</span>'</span>,
+    [[<span class="nu">300</span>, <span class="nu">600</span>], [<span class="nu">300</span>, <span class="nu">250</span>]],
+    <span class="st">'ad-sidebar'</span>)
+    .<span class="fn">defineSizeMapping</span>(mapSidebar).<span class="fn">addService</span>(googletag.<span class="fn">pubads</span>());
+
+  googletag.<span class="fn">defineSlot</span>(<span class="st">'/7542,<span class="mcm-network-val">{{MCM_CODE}}</span>/parceiros/<span class="code-name-val">{{CODE_NAME}}</span>'</span>,
+    [[<span class="nu">728</span>, <span class="nu">90</span>], [<span class="nu">970</span>, <span class="nu">90</span>], [<span class="nu">320</span>, <span class="nu">100</span>], [<span class="nu">300</span>, <span class="nu">100</span>], [<span class="nu">320</span>, <span class="nu">50</span>], [<span class="nu">300</span>, <span class="nu">50</span>]],
+    <span class="st">'ad-rodape'</span>)
+    .<span class="fn">defineSizeMapping</span>(mapLeaderboard).<span class="fn">addService</span>(googletag.<span class="fn">pubads</span>());
+
+  googletag.<span class="fn">defineSlot</span>(<span class="st">'/7542,<span class="mcm-network-val">{{MCM_CODE}}</span>/parceiros/<span class="code-name-val">{{CODE_NAME}}</span>'</span>,
+    [[<span class="nu">320</span>, <span class="nu">100</span>], [<span class="nu">300</span>, <span class="nu">100</span>], [<span class="nu">320</span>, <span class="nu">50</span>], [<span class="nu">300</span>, <span class="nu">50</span>]],
+    <span class="st">'ad-mobile'</span>)
+    .<span class="fn">defineSizeMapping</span>(mapMobile).<span class="fn">addService</span>(googletag.<span class="fn">pubads</span>());
+
+  googletag.pubads().<span class="fn">enableSingleRequest</span>();
+  googletag.pubads().<span class="fn">set</span>(<span class="st">'page_url'</span>, <span class="st">'<span class="page-url-val">{{PAGE_URL}}</span>'</span>);
+  googletag.pubads().<span class="fn">collapseEmptyDivs</span>();
+  googletag.<span class="fn">enableServices</span>();
+});
+<span class="kw">&lt;/script&gt;</span></pre>
+          </div>
+          <div id="panel-body-content" class="gd-tab-panel">
+            <pre class="gd-pre"><span class="cm">&lt;!-- ─────────────────────────────────────────── --&gt;</span>
+<span class="cm">&lt;!-- HEADER — desktop: 970x250 · 970x90 · 728x90  --&gt;</span>
+<span class="cm">&lt;!--          mobile:  320x100 · 320x50            --&gt;</span>
+<span class="cm">&lt;!-- ─────────────────────────────────────────── --&gt;</span>
+<span class="kw">&lt;div</span> <span class="at">id</span>=<span class="st">"ad-header"</span> <span class="at">style</span>=<span class="st">"text-align:center; margin:10px auto;"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;script&gt;</span>googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span>() { googletag.<span class="fn">display</span>(<span class="st">'ad-header'</span>); });<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+
+
+<span class="cm">&lt;!-- ─────────────────────────────────────────── --&gt;</span>
+<span class="cm">&lt;!-- CONTEÚDO — todas as telas: 300x250 · 336x280 --&gt;</span>
+<span class="cm">&lt;!-- ─────────────────────────────────────────── --&gt;</span>
+<span class="kw">&lt;div</span> <span class="at">id</span>=<span class="st">"ad-conteudo"</span> <span class="at">style</span>=<span class="st">"text-align:center; margin:10px auto;"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;script&gt;</span>googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span>() { googletag.<span class="fn">display</span>(<span class="st">'ad-conteudo'</span>); });<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+
+
+<span class="cm">&lt;!-- ─────────────────────────────────────────── --&gt;</span>
+<span class="cm">&lt;!-- SIDEBAR — desktop: 300x600 · 300x250         --&gt;</span>
+<span class="cm">&lt;!--           mobile:  300x250                   --&gt;</span>
+<span class="cm">&lt;!-- ─────────────────────────────────────────── --&gt;</span>
+<span class="kw">&lt;div</span> <span class="at">id</span>=<span class="st">"ad-sidebar"</span> <span class="at">style</span>=<span class="st">"margin:15px 0;"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;script&gt;</span>googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span>() { googletag.<span class="fn">display</span>(<span class="st">'ad-sidebar'</span>); });<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+
+
+<span class="cm">&lt;!-- ─────────────────────────────────────────── --&gt;</span>
+<span class="cm">&lt;!-- MOBILE — só aparece em telas &lt; 768px         --&gt;</span>
+<span class="cm">&lt;!--          320x100 · 320x50                    --&gt;</span>
+<span class="cm">&lt;!-- ─────────────────────────────────────────── --&gt;</span>
+<span class="kw">&lt;div</span> <span class="at">id</span>=<span class="st">"ad-mobile"</span> <span class="at">style</span>=<span class="st">"text-align:center; margin:10px auto;"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;script&gt;</span>googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span>() { googletag.<span class="fn">display</span>(<span class="st">'ad-mobile'</span>); });<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+
+
+<span class="cm">&lt;!-- ─────────────────────────────────────────── --&gt;</span>
+<span class="cm">&lt;!-- RODAPÉ — desktop: 970x90 · 728x90            --&gt;</span>
+<span class="cm">&lt;!--          mobile:  320x100 · 320x50           --&gt;</span>
+<span class="cm">&lt;!-- ─────────────────────────────────────────── --&gt;</span>
+<span class="kw">&lt;div</span> <span class="at">id</span>=<span class="st">"ad-rodape"</span> <span class="at">style</span>=<span class="st">"text-align:center; margin:10px auto;"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;script&gt;</span>googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span>() { googletag.<span class="fn">display</span>(<span class="st">'ad-rodape'</span>); });<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLOTS SECTION -->
+      <section id="section-slots">
+        <h2 class="gd-h2">2. Slots de anúncio — exemplos ao vivo</h2>
+        <p>Abaixo estão os slots renderizados no contexto real de uma página. Os blocos pontilhados indicam a área
+          reservada para cada anúncio.</p>
+
+        <!-- HEADER SLOT -->
+        <h3 class="gd-h3" id="slot-header">Header</h3>
+        <div class="gd-callout gd-callout--spec">
+          <div class="gd-spec-chips">
+            <span class="gd-chip gd-chip--desktop">Desktop: 970×250 · 970×90 · 728×90</span>
+            <span class="gd-chip gd-chip--mobile">Mobile: 320×100 · 320×50</span>
+          </div>
+        </div>
+        <div class="gd-ad-preview">
+          <div class="gd-ad-label">ad-header</div>
+          <div id="ad-header" data-google-query-id="COzJuZeyw5QDFb4OHgAdwuEXrg" style="display: none;">
+            <script>
+              googletag.cmd.push(function () {
+                googletag.display('ad-header');
+              });
+            </script>
+          </div>
+        </div>
+        <div class="gd-code-block gd-code-block--sm" id="block-header-snippet">
+          <div class="gd-code-header">
+            <span class="gd-code-filename">HTML</span>
+            <button class="gd-copy-btn" onclick="copyBlock('block-header-snippet', this)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="gd-pre"><span class="kw">&lt;div</span> <span class="at">id</span>=<span class="st">"ad-header"</span> <span class="at">style</span>=<span class="st">"text-align:center; margin:10px auto;"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;script&gt;</span>googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span>() { googletag.<span class="fn">display</span>(<span class="st">'ad-header'</span>); });<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span></pre>
+        </div>
+
+        <!-- CONTEUDO + SIDEBAR layout -->
+        <div class="gd-demo-layout">
+          <div class="gd-demo-main">
+            <!-- CONTEUDO SLOT -->
+            <h3 class="gd-h3" id="slot-conteudo">Conteúdo</h3>
+            <div class="gd-callout gd-callout--spec">
+              <div class="gd-spec-chips">
+                <span class="gd-chip gd-chip--all">Todas as telas: 300×250 · 336×280</span>
+              </div>
+            </div>
+            <div class="gd-ad-preview">
+              <div class="gd-ad-label">ad-conteudo</div>
+              <div id="ad-conteudo" style="text-align:center; margin:10px auto;">
+                <script>googletag.cmd.push(function () { googletag.display('ad-conteudo'); });</script>
+              </div>
+            </div>
+            <div class="gd-code-block gd-code-block--sm" id="block-conteudo-snippet">
+              <div class="gd-code-header">
+                <span class="gd-code-filename">HTML</span>
+                <button class="gd-copy-btn" onclick="copyBlock('block-conteudo-snippet', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+                  </svg>
+                  Copiar
+                </button>
+              </div>
+              <pre class="gd-pre"><span class="kw">&lt;div</span> <span class="at">id</span>=<span class="st">"ad-conteudo"</span> <span class="at">style</span>=<span class="st">"text-align:center; margin:10px auto;"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;script&gt;</span>googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span>() { googletag.<span class="fn">display</span>(<span class="st">'ad-conteudo'</span>); });<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span></pre>
+            </div>
+
+            <!-- MOBILE SLOT -->
+            <h3 class="gd-h3" id="slot-mobile">Mobile</h3>
+            <div class="gd-callout gd-callout--spec">
+              <div class="gd-spec-chips">
+                <span class="gd-chip gd-chip--mobile">Somente mobile (&lt;768px): 320×100 · 320×50</span>
+              </div>
+            </div>
+            <div class="gd-callout gd-callout--warning">
+              <span class="gd-callout__icon">⚠️</span>
+              <div>O GPT avalia o <code class="gd-inline-code">sizeMapping</code> no carregamento da página. Para
+                visualizar este slot, recarregue com viewport menor que 768px.
+                <button class="gd-btn-inline" onclick="location.reload()">↺ Recarregar</button>
+              </div>
+            </div>
+            <div class="gd-ad-preview">
+              <div class="gd-ad-label">ad-mobile</div>
+              <div id="ad-mobile" style="text-align:center; margin:10px auto;">
+                <script>googletag.cmd.push(function () { googletag.display('ad-mobile'); });</script>
+              </div>
+            </div>
+            <div class="gd-code-block gd-code-block--sm" id="block-mobile-snippet">
+              <div class="gd-code-header">
+                <span class="gd-code-filename">HTML</span>
+                <button class="gd-copy-btn" onclick="copyBlock('block-mobile-snippet', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+                  </svg>
+                  Copiar
+                </button>
+              </div>
+              <pre class="gd-pre"><span class="kw">&lt;div</span> <span class="at">id</span>=<span class="st">"ad-mobile"</span> <span class="at">style</span>=<span class="st">"text-align:center; margin:10px auto;"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;script&gt;</span>googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span>() { googletag.<span class="fn">display</span>(<span class="st">'ad-mobile'</span>); });<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span></pre>
+            </div>
+          </div>
+
+          <div class="gd-demo-sidebar">
+            <!-- SIDEBAR SLOT -->
+            <h3 class="gd-h3" id="slot-sidebar">Sidebar</h3>
+            <div class="gd-callout gd-callout--spec">
+              <div class="gd-spec-chips">
+                <span class="gd-chip gd-chip--desktop">Desktop: 300×600 · 300×250</span>
+                <span class="gd-chip gd-chip--mobile">Mobile: 300×250</span>
+              </div>
+            </div>
+            <div class="gd-ad-preview">
+              <div class="gd-ad-label">ad-sidebar</div>
+              <div id="ad-sidebar" style="margin:10px 0;">
+                <script>googletag.cmd.push(function () { googletag.display('ad-sidebar'); });</script>
+              </div>
+            </div>
+            <div class="gd-code-block gd-code-block--sm" id="block-sidebar-snippet">
+              <div class="gd-code-header">
+                <span class="gd-code-filename">HTML</span>
+                <button class="gd-copy-btn" onclick="copyBlock('block-sidebar-snippet', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+                  </svg>
+                  Copiar
+                </button>
+              </div>
+              <pre class="gd-pre"><span class="kw">&lt;div</span> <span class="at">id</span>=<span class="st">"ad-sidebar"</span> <span class="at">style</span>=<span class="st">"margin:15px 0;"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;script&gt;</span>googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span>() { googletag.<span class="fn">display</span>(<span class="st">'ad-sidebar'</span>); });<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- RODAPE SLOT -->
+        <h3 class="gd-h3" id="slot-rodape">Rodapé</h3>
+        <div class="gd-callout gd-callout--spec">
+          <div class="gd-spec-chips">
+            <span class="gd-chip gd-chip--desktop">Desktop: 970×90 · 728×90</span>
+            <span class="gd-chip gd-chip--mobile">Mobile: 320×100 · 320×50</span>
+          </div>
+        </div>
+        <div class="gd-ad-preview">
+          <div class="gd-ad-label">ad-rodape</div>
+          <div id="ad-rodape" style="text-align:center; margin:10px auto;">
+            <script>googletag.cmd.push(function () { googletag.display('ad-rodape'); });</script>
+          </div>
+        </div>
+        <div class="gd-code-block gd-code-block--sm" id="block-rodape-snippet">
+          <div class="gd-code-header">
+            <span class="gd-code-filename">HTML</span>
+            <button class="gd-copy-btn" onclick="copyBlock('block-rodape-snippet', this)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="gd-pre"><span class="kw">&lt;div</span> <span class="at">id</span>=<span class="st">"ad-rodape"</span> <span class="at">style</span>=<span class="st">"text-align:center; margin:10px auto;"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;script&gt;</span>googletag.cmd.<span class="fn">push</span>(<span class="kw">function</span>() { googletag.<span class="fn">display</span>(<span class="st">'ad-rodape'</span>); });<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span></pre>
+        </div>
+      </section>
+
+      <!-- REFERENCE SECTION -->
+      <section id="section-reference">
+        <h2 class="gd-h2">Referências</h2>
+        <div class="gd-reference-links">
+          <a class="gd-ref-link" href="https://support.google.com/admanager/answer/1100453?hl=pt-br" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z" />
+            </svg>
+            <div>
+              <strong>Google Ad Manager — Implementação de tags</strong>
+              <span>support.google.com/admanager/answer/1100453</span>
+            </div>
+          </a>
+          <a class="gd-ref-link" href="https://developers.google.com/publisher-tag/guides/get-started" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z" />
+            </svg>
+            <div>
+              <strong>Google Publisher Tag — Get Started</strong>
+              <span>developers.google.com/publisher-tag/guides/get-started</span>
+            </div>
+          </a>
+          <a class="gd-ref-link" href="assets/checklist-implementacao-tags.docx" download target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-list-checks-icon lucide-list-checks">
+              <path d="M13 5h8" />
+              <path d="M13 12h8" />
+              <path d="M13 19h8" />
+              <path d="m3 17 2 2 4-4" />
+              <path d="m3 7 2 2 4-4" />
+            </svg>
+            <div>
+              <strong>Checklist — Implementação de tags</strong>
+              <span>documento de checklist para implementação de tags</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="assets/script.js" defer></script>
+</body>
+
+</html>
