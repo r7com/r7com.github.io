@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview | Ad Manager</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&family=Roboto+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+
+    <!-- GPT Setup -->
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+    <script>
+        window.googletag = window.googletag || { cmd: [] };
+
+        googletag.cmd.push(function () {
+            // ── Size Mappings ──────────────────────────────
+            var mapHeader = googletag.sizeMapping()
+                .addSize([970, 0], [[970, 250], [970, 90], [728, 90]])
+                .addSize([728, 0], [[728, 90]])
+                .addSize([0, 0], [[320, 100], [300, 100], [320, 50], [300, 50]])
+                .build();
+
+            var mapLeaderboard = googletag.sizeMapping()
+                .addSize([970, 0], [[970, 90], [728, 90]])
+                .addSize([728, 0], [[728, 90]])
+                .addSize([0, 0], [[320, 100], [300, 100], [320, 50], [300, 50]])
+                .build();
+
+            var mapRetangulo = googletag.sizeMapping()
+                .addSize([0, 0], [[300, 250], [336, 280]])
+                .build();
+
+            var mapMobile = googletag.sizeMapping()
+                .addSize([768, 0], [])
+                .addSize([0, 0], [[320, 100], [300, 100], [320, 50], [300, 50]])
+                .build();
+
+            // ── Slots ──────────────────────────
+            googletag.defineSlot('/7542/parceiros/ofuxico', [[970, 250], [970, 90], [728, 90], [320, 100], [300, 100], [320, 50], [300, 50]], 'ad-header').defineSizeMapping(mapHeader).addService(googletag.pubads());
+            googletag.defineSlot('/7542/parceiros/ofuxico', [[300, 250], [336, 280]], 'ad-conteudo').defineSizeMapping(mapRetangulo).addService(googletag.pubads());
+            googletag.defineSlot('/7542/parceiros/ofuxico', [[728, 90], [970, 90], [320, 100], [300, 100], [320, 50], [300, 50]], 'ad-rodape').defineSizeMapping(mapLeaderboard).addService(googletag.pubads());
+            googletag.defineSlot('/7542/parceiros/ofuxico', [[320, 100], [300, 100], [320, 50], [300, 50]], 'ad-mobile').defineSizeMapping(mapMobile).addService(googletag.pubads());
+
+            // ── Configurações Gerais ────────────────────────
+            googletag.pubads().enableSingleRequest();
+
+            googletag.pubads().set('page_url', 'http://127.0.0.1:5500/');
+
+            googletag.pubads().collapseEmptyDivs();
+
+            // Ativa os serviços após mapear tudo
+            googletag.enableServices();
+
+        });
+    </script>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="gd-topnav">
+        <a class="gd-topnav__brand" href="index.html">
+        <img src="assets/images/wpp_logo.webp" alt="Logo" class="gd-topnav__logo-img">
+        </a>
+        <div class="gd-topnav__inner">
+        <a class="gd-topnav__logo" href="#">
+            <span class="gd-topnav__product">Ad Manager</span>
+            <span class="gd-topnav__sep">›</span>
+            <select class="gd-topnav__section" onchange="location = this.value;">
+                <option value="index.html">Implementação</option>
+                <option value="preview.html" selected>Preview</option>
+                <option value="preview-post.html">Preview Post</option>
+            </select>
+        </a>
+        <nav class="gd-topnav__links">
+            <a href="https://support.google.com/admanager/answer/1100453?hl=pt-br" target="_blank">Referência</a>
+            <a href="https://developers.google.com/publisher-tag/guides/get-started" target="_blank">GPT Docs</a>
+        </nav>
+        </div>
+    </header>
+
+    <!-- ad-header -->
+    <div id="ad-header" style="text-align:center; margin:45px auto;">
+        <script>
+            googletag.cmd.push(function () {
+                googletag.display('ad-header');
+            });
+        </script>
+    </div>
+
+    <main class="r7-container">
+
+        <!-- Enquete -->
+        <section class="r7-poll">
+            <span class="r7-poll__vote">● VOTE</span>
+            <span class="r7-poll__thumb">BALANÇO GERAL</span>
+            <p class="r7-poll__text">'Caça-pipocas': Voluntários expulsam corredores não inscritos de corrida. Justo?
+            </p>
+            <button class="r7-poll__next">›</button>
+        </section>
+        <div class="r7-poll-dots"><span class="is-active"></span><span></span></div>
+
+        <!-- Manchete -->
+        <section class="r7-lead">
+            <h1>CCJ da Câmara aprova PEC que reduz maioridade penal; texto vai a comissão especial</h1>
+            <div class="r7-grid-3">
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Lula tem 39% das intenções de voto, e Flávio, 29%, no
+                        primeiro turno, aponta Quaest</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Medo de atentado? Por que Putin mandou desligar câmeras após
+                        assassinato de líder iraniano</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Irmã de Cristiano Ronaldo que mora no Brasil se prepara para
+                        a Copa: 'Última dança'</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">'Pauta-bomba' de R$ 100 bi sobre aposentadoria de agentes de
+                        saúde avança no Senado</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Trump promete atacar 'com muita força' e retomar bombardeios
+                        se Irã rejeitar acordo</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Real Madrid corre risco de perder Vini Jr. de graça; entenda
+                        a situação do clube espanhol</a>
+                </article>
+            </div>
+        </section>
+
+        <!-- ad-conteudo -->
+        <div id="ad-conteudo" style="text-align:center; margin:10px auto;">
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('ad-conteudo');
+                });
+            </script>
+        </div>
+
+        <!-- Colunas -->
+        <section class="r7-columns">
+            <div>
+                <h2 class="r7-col-title r7-col-title--brasil">No Brasil <span class="r7-rule"></span></h2>
+                <article class="r7-feature">
+                    <div class="r7-thumb r7-thumb--big"></div>
+                    <a href="#" class="r7-feature__title">Morre Clodoaldo Pelizzoni, secretário de Planejamento da
+                        Prefeitura de SP, aos 57 anos</a>
+                </article>
+                <ul class="r7-col-list">
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm r7-thumb--play"></div><a href="#">Suspeito de série de roubos
+                            é preso após usar identidade do próprio irmão</a>
+                    </li>
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm"></div><a href="#">Menino de 3 anos fica grudado em sofá após
+                            usar supercola em Betim (MG)</a>
+                    </li>
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm r7-thumb--play"></div><a href="#">Polícia prende um dos
+                            torturadores de policial e cabo da Aeronáutica no RJ</a>
+                    </li>
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm r7-thumb--play"></div><a href="#">Envenenamento de cães
+                            comunitários mobiliza investigação em SP</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="r7-col-title r7-col-title--mundo">No mundo <span class="r7-rule"></span></h2>
+                <article class="r7-feature">
+                    <div class="r7-thumb r7-thumb--big"></div>
+                    <a href="#" class="r7-feature__title">Irmão de ex-presidente colombiano se entrega após condenação
+                        por formar grupo militar</a>
+                </article>
+                <ul class="r7-col-list">
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm"></div><a href="#">Por que China de Xi projeta 'futuro
+                            brilhante' com a parceira Coreia do Norte</a>
+                    </li>
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm"></div><a href="#">Deputados da Hungria aprovam redução de 40%
+                            dos próprios salários</a>
+                    </li>
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm"></div><a href="#">China critica as novas sanções
+                            'unilaterais' da UE contra a Rússia</a>
+                    </li>
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm"></div><a href="#">Netanyahu disputará novo mandato nas
+                            eleições de outubro em Israel</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="r7-col-title r7-col-title--entret">Entretenimento <span class="r7-rule"></span></h2>
+                <article class="r7-feature">
+                    <div class="r7-thumb r7-thumb--big"><span class="r7-blog-tag">BLOG</span></div>
+                    <a href="#" class="r7-feature__title">Entenda por que a filha de Brad Pitt pediu na Justiça a
+                        retirada do sobrenome do pai</a>
+                </article>
+                <ul class="r7-col-list">
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm"></div><a href="#">Mulher de Endrick entrega: ela controla as
+                            redes sociais do jogador</a>
+                    </li>
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm"></div><a href="#">Toy Story 5 está fazendo críticos chorarem
+                            e já é o favorito do ano</a>
+                    </li>
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm"></div><a href="#">Paris Hilton mostra mansão para pets com
+                            dois andares e ar-condicionado</a>
+                    </li>
+                    <li>
+                        <div class="r7-thumb r7-thumb--sm"></div><a href="#">MC Daniel se revolta e exibe machucado após
+                            lance em jogo beneficente</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- R7 Vídeo -->
+        <section class="r7-video">
+            <h2 class="r7-section-heading">R7 <span>Vídeo</span></h2>
+            <div class="r7-video-grid">
+                <article class="r7-video-card">
+                    <div class="r7-thumb r7-thumb--video"></div><a href="#">Neymar leva para a Copa coleção de relógios
+                        avaliada em R$ 21 milhões; veja</a>
+                </article>
+                <article class="r7-video-card">
+                    <div class="r7-thumb r7-thumb--video r7-thumb--play"></div><a href="#">Carro de idoso é arrastado
+                        por mais de 100 m após briga de trânsito em BH</a>
+                </article>
+                <article class="r7-video-card">
+                    <div class="r7-thumb r7-thumb--video r7-thumb--player"></div><a href="#">Mulher que se passou por
+                        criança de 12 anos fingiu ter câncer terminal</a>
+                </article>
+            </div>
+            <div class="r7-video-list">
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Justiça suspende expulsão de Aldo Rebelo do DC e determina
+                        reintegração</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Justiça determina fim de escolta para ex-primeira-dama e
+                        filhos de Cláudio Castro no Rio</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Quem era a 'influenciadora do agro' morta a tiros no
+                        interior de Minas Gerais</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Neymar pai aluga mansão de R$ 75 milhões em Orlando para a
+                        Copa do Mundo</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Comissão do Senado aprova PEC que dá autonomia ao BC;
+                        entenda principais pontos</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Natália Martins: Decreto autoriza policiais brasileiros a
+                        atuarem em 3 países; entenda</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">'Achei que ia morrer', diz vítima do 'Maníaco do metrô',
+                        preso na zona leste de SP</a>
+                </article>
+                <article class="r7-item">
+                    <div class="r7-thumb"></div><a href="#">Blog: Brasileiro se aproxima de Messi, mas nunca foi
+                        cogitado pela seleção</a>
+                </article>
+            </div>
+        </section>
+
+        <!-- Tempo -->
+        <section class="r7-weather">
+            <div class="r7-weather__brand"><strong>R7 TEMPO</strong><small>Oferecimento</small></div>
+            <div class="r7-weather__loc">📍 São Paulo - SP <span>›</span></div>
+            <div class="r7-weather__now">Tempo <strong>agora:</strong></div>
+            <div class="r7-weather__temp">22°<sup>22°<br>14°</sup></div>
+            <div class="r7-weather__icon">⛅</div>
+            <div class="r7-weather__desc">Sol com muitas nuvens</div>
+            <a href="#" class="r7-weather__link">Previsão completa</a>
+        </section>
+
+        <!-- Copa -->
+        <section class="r7-worldcup">
+            <h2 class="r7-section-heading">Copa do <span>Mundo</span></h2>
+            <button class="r7-lineup-btn">ESCALE SUA SELEÇÃO</button>
+        </section>
+
+    </main>
+
+    <!-- ad-mobile -->
+    <div id="ad-mobile" style="text-align:center; margin:10px auto;">
+        <script>
+            googletag.cmd.push(function () {
+                googletag.display('ad-mobile');
+            });
+        </script>
+    </div>
+
+    <!-- ad-rodape -->
+    <div id="ad-rodape" style="text-align:center; margin:10px auto;">
+        <script>
+            googletag.cmd.push(function () {
+                googletag.display('ad-rodape');
+            });
+        </script>
+    </div>
+
+    <script src="assets/script.js"></script>
+
+</body>
+
+</html>
