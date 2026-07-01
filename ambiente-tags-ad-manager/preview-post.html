@@ -1,0 +1,285 @@
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artigo — Clone R7</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&family=Roboto+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+
+    <!-- GPT Setup -->
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+    <script>
+        window.googletag = window.googletag || { cmd: [] };
+
+        googletag.cmd.push(function () {
+            // ── Size Mappings ──────────────────────────────
+            var mapHeader = googletag.sizeMapping()
+                .addSize([970, 0], [[970, 250], [970, 90], [728, 90]])
+                .addSize([728, 0], [[728, 90]])
+                .addSize([0, 0], [[320, 100], [300, 100], [320, 50], [300, 50]])
+                .build();
+
+            var mapLeaderboard = googletag.sizeMapping()
+                .addSize([970, 0], [[970, 90], [728, 90]])
+                .addSize([728, 0], [[728, 90]])
+                .addSize([0, 0], [[320, 100], [300, 100], [320, 50], [300, 50]])
+                .build();
+
+            var mapRetangulo = googletag.sizeMapping()
+                .addSize([0, 0], [[300, 250], [336, 280]])
+                .build();
+
+            var mapSidebar = googletag.sizeMapping()
+                .addSize([768, 0], [[300, 600], [300, 250]])
+                .addSize([0, 0], [[300, 250]])
+                .build();
+
+            var mapMobile = googletag.sizeMapping()
+                .addSize([768, 0], [])
+                .addSize([0, 0], [[320, 100], [300, 100], [320, 50], [300, 50]])
+                .build();
+
+            // ── Slots ──────────────────────────────────────
+            googletag.defineSlot('/7542/parceiros/ofuxico', [[970, 250], [970, 90], [728, 90], [320, 100], [300, 100], [320, 50], [300, 50]], 'ad-header').defineSizeMapping(mapHeader).addService(googletag.pubads());
+            googletag.defineSlot('/7542/parceiros/ofuxico', [[300, 250], [336, 280]], 'ad-conteudo').defineSizeMapping(mapRetangulo).addService(googletag.pubads());
+            googletag.defineSlot('/7542/parceiros/ofuxico', [[300, 600], [300, 250]], 'ad-sidebar-halfpage').defineSizeMapping(mapSidebar).addService(googletag.pubads());
+            googletag.defineSlot('/7542/parceiros/ofuxico', [[300, 250], [336, 280]], 'ad-sidebar-box').defineSizeMapping(mapRetangulo).addService(googletag.pubads());
+            googletag.defineSlot('/7542/parceiros/ofuxico', [[728, 90], [970, 90], [320, 100], [300, 100], [320, 50], [300, 50]], 'ad-rodape').defineSizeMapping(mapLeaderboard).addService(googletag.pubads());
+            googletag.defineSlot('/7542/parceiros/ofuxico', [[320, 100], [300, 100], [320, 50], [300, 50]], 'ad-mobile').defineSizeMapping(mapMobile).addService(googletag.pubads());
+
+            // ── Configurações Gerais ────────────────────────
+            googletag.pubads().enableSingleRequest();
+            googletag.pubads().set('page_url', 'http://127.0.0.1:5500/');
+            googletag.pubads().collapseEmptyDivs();
+            googletag.enableServices();
+        });
+    </script>
+</head>
+
+<body class="r7-page">
+
+    <!-- ============ NAVEGAÇÃO (dropdown entre páginas) ============ -->
+    <header class="gd-topnav" style="position:relative;">
+        <a class="gd-topnav__brand" href="index.html">
+            <img src="assets/images/wpp_logo.webp" alt="Logo" class="gd-topnav__logo-img">
+        </a>
+        <div class="gd-topnav__inner">
+            <a class="gd-topnav__logo" href="#">
+                <span class="gd-topnav__product">Ad Manager</span>
+                <span class="gd-topnav__sep">›</span>
+                <select class="gd-topnav__section" onchange="location = this.value;">
+                    <option value="index.html">Implementação</option>
+                    <option value="preview.html">Preview</option>
+                    <option value="preview-post.html" selected>Preview Post</option>
+                </select>
+            </a>
+            <nav class="gd-topnav__links">
+                <a href="https://support.google.com/admanager/answer/1100453?hl=pt-br" target="_blank">Referência</a>
+                <a href="https://developers.google.com/publisher-tag/guides/get-started" target="_blank">GPT Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============ HEADER (mesmo do preview.html) ============ -->
+    <header class="r7-header">
+        <div class="r7-header__inner">
+            <a href="#" class="r7-logo">R7</a>
+            <button class="r7-menu-btn">
+                <span class="r7-menu-icon"><i></i><i></i><i></i></span> MENU
+            </button>
+            <span class="r7-divider"></span>
+            <nav class="r7-nav">
+                <a href="#">BRASÍLIA</a><a href="#">CASA DO PATRÃO</a><a href="#">ENTRETÊ</a>
+                <a href="#">ESPORTES</a><a href="#">JR 24H</a><a href="#">RECORD</a><a href="#">RECORD NEWS</a>
+            </nav>
+            <div class="r7-header__right">
+                <a href="#" class="r7-recordplus">▶ recordplus</a>
+                <div class="r7-social">
+                    <a href="#">f</a><a href="#">𝕏</a><a href="#">◉</a><a href="#">+</a>
+                </div>
+                <span class="r7-divider"></span>
+                <a href="#" class="r7-login"><span class="r7-login__avatar">👤</span> Entrar ▾</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============ BILLBOARD DO PROGRAMA ============ -->
+    <section class="r7-billboard">
+        <div class="r7-billboard__art">CANTA COMIGO · TEEN 6</div>
+    </section>
+
+    <!-- ============ LEADERBOARD (ad-header) ============ -->
+    <div id="ad-header" style="text-align:center; margin:10px auto;">
+        <script>
+            googletag.cmd.push(function () {
+                googletag.display('ad-header');
+            });
+        </script>
+    </div>
+
+    <!-- ============ LAYOUT DO ARTIGO ============ -->
+    <main class="r7-container r7-article-layout">
+
+        <!-- ---- Coluna principal ---- -->
+        <article class="r7-article">
+
+            <!-- Breadcrumb -->
+            <nav class="r7-breadcrumb">
+                <a href="#">Record</a><span>›</span>
+                <a href="#">Canta Comigo</a><span>›</span>
+                <a href="#">Canta Comigo Teen 6</a><span>›</span>
+                <strong>Esquenta</strong>
+            </nav>
+
+            <!-- Título + subtítulo -->
+            <h1 class="r7-article__title">Playlist da Copa! Confira 7 hits para embalar a torcida nos jogos da seleção
+                brasileira</h1>
+            <p class="r7-article__lead">Se depender do Canta Comigo Teen, o hexa vai chegar em grande estilo!</p>
+
+            <!-- Byline / data / share -->
+            <div class="r7-byline">
+                <div class="r7-byline__info">
+                    <span class="r7-byline__cat">ESQUENTA</span>
+                    <span class="r7-byline__sep">|</span>
+                    <span class="r7-byline__author">Do R7</span>
+                    <div class="r7-byline__date">10/06/2026 - 00H05 <span>(ATUALIZADO EM 10/06/2026 - 00H05)</span>
+                    </div>
+                </div>
+                <div class="r7-share">
+                    <a href="#" aria-label="X">𝕏</a>
+                    <a href="#" aria-label="Facebook">f</a>
+                    <a href="#" aria-label="LinkedIn">in</a>
+                    <a href="#" aria-label="WhatsApp">✆</a>
+                    <a href="#" aria-label="Google News">G</a>
+                    <a href="#" aria-label="Copiar link">🔗</a>
+                </div>
+            </div>
+
+            <!-- Imagem destaque -->
+            <figure class="r7-figure">
+                <div class="r7-figure__img">
+                    <span class="r7-figure__overlay">PLAYLIST DA COPA</span>
+                    <div class="r7-figure__share">
+                        <a href="#">G</a><a href="#">f</a><a href="#">𝕏</a>
+                        <a href="#">✆</a><a href="#">🔗</a><a href="#">⛶</a>
+                    </div>
+                </div>
+                <figcaption class="r7-figure__caption">
+                    Que tal torcer pelo Brasil na Copa do Mundo ao som da playlist do Canta Comigo Teen?
+                    Preparamos uma lista recheada de hits nacionais empolgantes para a torcida se animar nos
+                    jogos. Se liga!
+                    <span class="r7-figure__credit">Arte/R7</span>
+                </figcaption>
+            </figure>
+
+            <!-- Corpo do texto -->
+            <div class="r7-article__body">
+                <p>Com a Copa do Mundo se aproximando, nada melhor do que uma boa trilha sonora para
+                    embalar a torcida. Os participantes do <em>Canta Comigo Teen</em> selecionaram sete
+                    músicas que prometem animar qualquer roda de amigos durante os jogos da seleção.</p>
+
+                <h2 class="r7-article__h2">1. O hit que não pode faltar</h2>
+                <p>Abrindo a lista, um clássico que atravessa gerações e sempre aparece nas comemorações
+                    mais animadas. Garantia de empolgação do primeiro ao último minuto da partida.</p>
+
+                <!-- ad-conteudo -->
+                <div id="ad-conteudo" style="text-align:center; margin:10px auto;">
+                    <script>
+                        googletag.cmd.push(function () {
+                            googletag.display('ad-conteudo');
+                        });
+                    </script>
+                </div>
+
+                <h2 class="r7-article__h2">2. Para os momentos de tensão</h2>
+                <p>Quando o placar aperta, esta faixa entra para acalmar (ou agitar ainda mais) os corações
+                    da torcida. Um verdadeiro hino de superação.</p>
+                <p>O restante da playlist você confere reproduzindo o vídeo acima e acompanhando o
+                    <em>Canta Comigo Teen</em>, todos os domingos.
+                </p>
+            </div>
+        </article>
+
+        <!-- ---- Sidebar de anúncios ---- -->
+        <aside class="r7-sidebar">
+            <div id="ad-sidebar-box" style="margin:10px 0;">
+                <script>
+                    googletag.cmd.push(function () {
+                        googletag.display('ad-sidebar-box');
+                    });
+                </script>
+            </div>
+            <div id="ad-sidebar-halfpage" class="r7-is-sticky" style="margin:10px 0;">
+                <script>
+                    googletag.cmd.push(function () {
+                        googletag.display('ad-sidebar-halfpage');
+                    });
+                </script>
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- ============ ISSO PODE TE INTERESSAR (recomendados) ============ -->
+    <section class="r7-container r7-recommend">
+        <h2 class="r7-recommend__title">Isso pode te interessar!</h2>
+
+        <div class="r7-recommend__grid">
+            <article class="r7-rec-card">
+                <div class="r7-thumb r7-rec-card__img"></div>
+                <h3>Só 5% acertam todas as capitais deste quiz de geografia</h3>
+                <p>A maior parte trava na pergunta 7. Prove que vai mais longe.</p>
+                <span class="r7-rec-card__source">Nocturne | Sponsored</span>
+            </article>
+
+            <article class="r7-rec-card">
+                <div class="r7-thumb r7-rec-card__img"></div>
+                <h3>A apneia do sono está ligada a este item doméstico (pare de usá-lo)</h3>
+                <p>&nbsp;</p>
+                <span class="r7-rec-card__source">memory-pillow.com | Sponsored</span>
+            </article>
+
+            <article class="r7-rec-card">
+                <div class="r7-thumb r7-rec-card__img"></div>
+                <h3>Veja como assistir a todos os jogos da Copa sem pagar nada a mais</h3>
+                <p>O passo a passo que muita gente ainda não conhece.</p>
+                <span class="r7-rec-card__source">disneyplus.com | Sponsored</span>
+            </article>
+
+            <article class="r7-rec-card">
+                <div class="r7-thumb r7-rec-card__img"></div>
+                <h3>Especialistas indicam o truque para dormir melhor em 2 minutos</h3>
+                <p>Funciona mesmo para quem sofre de insônia.</p>
+                <span class="r7-rec-card__source">sleep.com | Sponsored</span>
+            </article>
+        </div>
+    </section>
+
+    <!-- ad-mobile -->
+    <div id="ad-mobile" style="text-align:center; margin:10px auto;">
+        <script>
+            googletag.cmd.push(function () {
+                googletag.display('ad-mobile');
+            });
+        </script>
+    </div>
+
+    <!-- ad-rodape -->
+    <div id="ad-rodape" style="text-align:center; margin:10px auto;">
+        <script>
+            googletag.cmd.push(function () {
+                googletag.display('ad-rodape');
+            });
+        </script>
+    </div>
+
+    <script src="assets/script.js"></script>
+
+</body>
+
+</html>
