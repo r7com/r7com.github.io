@@ -1,1 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Integration Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f8fafc; }
+        .code-block { font-family: 'Consolas', 'Courier New', monospace; font-size: 0.85rem; }
+        .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; font-weight: 600; }
+        .tab-inactive { border-bottom: 2px solid transparent; color: #64748b; }
+        .tab-inactive:hover { color: #334155; border-bottom: 2px solid #cbd5e1; }
+        
+        .subtab-active { background-color: #2563eb; color: #ffffff; }
+        .subtab-inactive { background-color: #f1f5f9; color: #475569; }
+        .subtab-inactive:hover { background-color: #e2e8f0; }
+    </style>
+</head>
+<body>
 
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path></svg>
+                <h1 class="text-xl font-bold text-gray-800">Video Integration Hub</h1>
+            </div>
+            <nav class="flex gap-4">
+                <button onclick="switchMainTab('generator')" id="tab-generator" class="tab-active px-2 py-1 transition-colors">Gerador de Player</button>
+                <button onclick="switchMainTab('docs')" id="tab-docs" class="tab-inactive px-2 py-1 transition-colors">Guia de Implementação</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-8">
+        
+        <!-- ABA PRINCIPAL: GERADOR -->
+        <div id="section-generator" class="block">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col md:flex-row">
+                
+                <!-- Coluna Esquerda: Configuração -->
+                <div class="w-full md:w-1/3 bg-gray-50 p-6 border-r border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-6">Parâmetros da Mídia</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Fonte do Vídeo</label>
+                        <select id="mediaSourceType" class="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500 text-sm" onchange="toggleMediaInputs()">
+                            <option value="youtube">Iframe / Embed do YouTube</option>
+                            <option value="direct">Arquivo Nativo (MP4 / HLS)</option>
+                        </select>
+                    </div>
+
+                    <div id="input-youtube" class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Código Embed (YouTube)</label>
+                        <textarea id="embedCode" rows="3" class="w-full border border-gray-300 rounded-md p-2 text-sm font-mono placeholder-gray-400" placeholder='<iframe src="https://www.youtube.com/embed/..." ...></iframe>'></textarea>
+                    </div>
+
+                    <div id="input-direct" class="mb-4 hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">URL do Arquivo</label>
+                        <input type="text" id="fileUrl" class="w-full border border-gray-300 rounded-md p-2 text-sm font-mono placeholder-gray-400" placeholder="https://dominio.com/video.mp4">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Ad Unit (GAM)</label>
+                        <input type="text" id="adUnitId" class="w-full border border-gray-300 rounded-md p-2 text-sm font-mono placeholder-gray-400" placeholder="/1234567/meu_portal/video_instream">
+                        <p class="text-xs text-gray-500 mt-1">Insira apenas o caminho numérico e as hierarquias da ad unit.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Video ID (Opcional)</label>
+                        <input type="text" id="videoId" class="w-full border border-gray-300 rounded-md p-2 text-sm font-mono placeholder-gray-400" placeholder="Ex: video_12345">
+                    </div>
+
+                    <button onclick="generateIntegrationPayload()" class="w-full bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-md hover:bg-blue-700 transition-colors shadow-sm">
+                        Gerar Código & Testar
+                    </button>
+                </div>
+
+                <!-- Coluna Direita: Resultados e Preview -->
+                <div class="w-full md:w-2/3 flex flex-col bg-white">
+                    
+                    <div id="output-empty" class="h-full min-h-[400px] flex items-center justify-center text-gray-400 bg-gray-50 m-6 border-2 border-dashed border-gray-200 rounded-lg">
+                        Preencha os dados e clique em "Gerar Código & Testar"
+                    </div>
+
+                    <div id="output-results" class="hidden flex-col h-full">
+                        
+                        <!-- Navegação das Sub-Abas -->
+                        <div class="flex p-4 border-b border-gray-200 gap-2 bg-gray-50">
+                            <button onclick="switchSubTab('preview')" id="subtab-preview" class="subtab-active px-4 py-1.5 rounded-md text-sm font-medium transition-colors shadow-sm">Preview ao Vivo</button>
+                            <button onclick="switchSubTab('code')" id="subtab-code" class="subtab-inactive px-4 py-1.5 rounded-md text-sm font-medium transition-colors shadow-sm">Payload de Integração</button>
+                        </div>
+
+                        <!-- Sub-Aba: Preview ao Vivo -->
+                        <div id="view-preview" class="p-6 block bg-gray-900 flex-grow relative">
+                            <p class="text-xs text-gray-400 mb-4 text-center">Este player está simulando a injeção exata que ocorrerá no site parceiro.</p>
+                            <div id="live-preview-container" class="w-full max-w-3xl mx-auto rounded overflow-hidden shadow-2xl bg-black"></div>
+                        </div>
+
+                        <!-- Sub-Aba: Códigos -->
+                        <div id="view-code" class="p-6 hidden overflow-y-auto">
+                            <!-- Output HTML -->
+                            <div class="mb-6">
+                                <div class="flex justify-between items-end mb-2">
+                                    <div>
+                                        <h3 class="font-semibold text-sm text-gray-700">1. Container HTML</h3>
+                                        <p class="text-xs text-gray-500">Posicione no local exato onde o player deve aparecer na matéria.</p>
+                                    </div>
+                                    <button onclick="copyToClipboard('code-html')" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 py-1.5 px-3 rounded border border-gray-200 transition-colors shadow-sm font-medium">Copiar HTML</button>
+                                </div>
+                                <div class="bg-gray-900 rounded-md p-4 overflow-x-auto border border-gray-800 shadow-inner">
+                                    <pre><code id="code-html" class="text-emerald-400 code-block"></code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Output JS -->
+                            <div>
+                                <div class="flex justify-between items-end mb-2">
+                                    <div>
+                                        <h3 class="font-semibold text-sm text-gray-700">2. Script de Renderização</h3>
+                                        <p class="text-xs text-gray-500">Injete via Tag Manager (Custom HTML) ou no footer do CMS.</p>
+                                    </div>
+                                    <button onclick="copyToClipboard('code-js')" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 py-1.5 px-3 rounded border border-gray-200 transition-colors shadow-sm font-medium">Copiar Script</button>
+                                </div>
+                                <div class="bg-gray-900 rounded-md p-4 overflow-x-auto max-h-96 border border-gray-800 shadow-inner">
+                                    <pre><code id="code-js" class="text-blue-300 code-block"></code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA PRINCIPAL: DOCUMENTAÇÃO -->
+        <div id="section-docs" class="hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 max-w-4xl mx-auto">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Guia de Implementação</h2>
+                
+                <div class="prose text-gray-600 max-w-none">
+                    <p class="mb-6">Este guia orienta a equipe técnica do portal parceiro a injetar o player de vídeo monetizado dentro de matérias e páginas web, garantindo a leitura dinâmica da URL atual para entrega precisa de anúncios instream.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Passo 1: Definir o posicionamento (HTML)</h3>
+                    <p class="mb-4">O código gerado na etapa "Container HTML" é apenas uma estrutura vazia (uma <code>&lt;div&gt;</code>). Ela serve como uma "âncora". O desenvolvedor ou o redator no CMS deve colar esse pequeno trecho de HTML exatamente onde o vídeo deve quebrar o texto da matéria.</p>
+                    <ul class="list-disc pl-5 mb-6 text-sm">
+                        <li>Não possui estilos conflitantes.</li>
+                        <li>Já possui lógica responsiva de 16:9 (o vídeo se adapta ao tamanho da tela de celulares e desktops).</li>
+                    </ul>
+
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Passo 2: Injetar o Comportamento (Script)</h3>
+                    <p class="mb-4">O script gerado é auto-contido. Ele verifica se as bibliotecas de reprodução de vídeo já existem no site. Se não existirem, ele as baixa de forma assíncrona para não deixar o site parceiro lento.</p>
+                    <p class="mb-4"><strong>Onde colocar o Script?</strong></p>
+                    <ul class="list-disc pl-5 mb-6 text-sm">
+                        <li><strong>Via Google Tag Manager (Recomendado):</strong> Crie uma tag do tipo "HTML Personalizado", cole o script gerado, e defina o acionador para as páginas de matérias (Page View).</li>
+                        <li><strong>Via CMS:</strong> Cole o script no final do corpo da página (próximo ao fechamento da tag <code>&lt;/body&gt;</code>).</li>
+                    </ul>
+
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Passo 3: A Mágica da Tag VAST</h3>
+                    <p class="mb-4">O script gerado automaticamente detecta a URL da página do parceiro no momento em que o usuário a acessa e injeta essa informação na Macro <code>{{PAGE_URL}}</code> da requisição do anúncio. Isso garante que as métricas de Viewability e origem do tráfego sejam precisas e transparentes.</p>
+
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded text-sm text-blue-800 mt-8">
+                        <strong>Nota Técnica:</strong> O player suporta tanto vídeos hospedados (MP4) quanto a camada de sobreposição inteligente para iframes do YouTube, mantendo a conformidade técnica sem quebrar o ecossistema do site origem.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Navegação das Abas Principais
+        function switchMainTab(tabId) {
+            document.getElementById('section-generator').classList.add('hidden');
+            document.getElementById('section-docs').classList.add('hidden');
+            document.getElementById('tab-generator').className = 'tab-inactive px-2 py-1 transition-colors';
+            document.getElementById('tab-docs').className = 'tab-inactive px-2 py-1 transition-colors';
+            
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+            document.getElementById('tab-' + tabId).className = 'tab-active px-2 py-1 transition-colors';
+        }
+
+        // Navegação das Sub-Abas (Preview vs Código)
+        function switchSubTab(tabId) {
+            document.getElementById('view-preview').classList.add('hidden');
+            document.getElementById('view-code').classList.add('hidden');
+            
+            document.getElementById('subtab-preview').className = 'subtab-inactive px-4 py-1.5 rounded-md text-sm font-medium transition-colors shadow-sm';
+            document.getElementById('subtab-code').className = 'subtab-inactive px-4 py-1.5 rounded-md text-sm font-medium transition-colors shadow-sm';
+            
+            document.getElementById('view-' + tabId).classList.remove('hidden');
+            document.getElementById('subtab-' + tabId).className = 'subtab-active px-4 py-1.5 rounded-md text-sm font-medium transition-colors shadow-sm';
+        }
+
+        // Alternância de formulário baseado no tipo de mídia
+        function toggleMediaInputs() {
+            const type = document.getElementById('mediaSourceType').value;
+            if (type === 'youtube') {
+                document.getElementById('input-youtube').classList.remove('hidden');
+                document.getElementById('input-direct').classList.add('hidden');
+            } else {
+                document.getElementById('input-youtube').classList.add('hidden');
+                document.getElementById('input-direct').classList.remove('hidden');
+            }
+        }
+
+        // Extrator seguro do link do youtube do iframe
+        function parseYoutubeSrc(iframeString) {
+            const match = iframeString.match(/src=["'](.*?)["']/);
+            let src = match ? match[1] : '';
+            if (src && !src.includes('enablejsapi=1')) {
+                src += (src.includes('?') ? '&' : '?') + 'enablejsapi=1';
+            }
+            return src;
+        }
+
+        // Destrói instâncias antigas do player para não vazar memória no preview
+        function clearPreviousPlayers() {
+            if (typeof videojs !== 'undefined') {
+                for (const playerId in videojs.players) {
+                    videojs.players[playerId].dispose();
+                }
+            }
+            document.getElementById('live-preview-container').innerHTML = '';
+        }
+
+        // Geração do Payload e Execução do Preview
+        function generateIntegrationPayload() {
+            const sourceType = document.getElementById('mediaSourceType').value;
+            const adUnit = document.getElementById('adUnitId').value.trim();
+            let videoId = document.getElementById('videoId').value.trim() || 'vid_' + Math.floor(Math.random() * 99999);
+            
+            let mediaUrl = '';
+            if (sourceType === 'youtube') {
+                mediaUrl = parseYoutubeSrc(document.getElementById('embedCode').value);
+                if (!mediaUrl) { alert('Código embed do YouTube inválido.'); return; }
+            } else {
+                mediaUrl = document.getElementById('fileUrl').value.trim();
+                if (!mediaUrl) { alert('URL do arquivo inválida.'); return; }
+            }
+
+            if (!adUnit) { alert('O preenchimento do Ad Unit é obrigatório.'); return; }
+
+            // Limpa o ambiente antes de gerar um novo
+            clearPreviousPlayers();
+
+            // Identificador único para instâncias múltiplas
+            const instanceId = 'media-container-' + Math.random().toString(36).substr(2, 9);
+
+            // 1. Criando Payload HTML
+            const htmlPayload = `<div id="${instanceId}" style="width: 100%; max-width: 800px; margin: 0 auto; background: #000;"></div>`;
+
+            // 2. Criando Payload JS (A lógica automática de VAST)
+            const jsPayload = `<script>
+(function() {
+    var containerId = '${instanceId}';
+    var mediaFormat = '${sourceType}';
+    var mediaSrc = '${mediaUrl}';
+    var targetAdUnit = '${adUnit}';
+    var mediaId = '${videoId}';
+
+    function buildVastRequest() {
+        var currentUrl = encodeURIComponent(window.location.href);
+        return "https://pubads.g.doubleclick.net/gampad/ads?" + 
+            "iu=" + targetAdUnit + 
+            "&sz=768x432" + 
+            "&output=xml_vast4" + 
+            "&description_url=" + currentUrl + 
+            "&url=" + currentUrl + 
+            "&env=vp" + 
+            "&gdfp_req=1" + 
+            "&unviewed_position_start=1" + 
+            "&plcmt=1" + 
+            "&vpa=click" + 
+            "&vpmute=0" + 
+            "&vpos=preroll" + 
+            "&cmsid=2686218" + 
+            "&vid=" + mediaId + 
+            "&correlator=" + Math.floor(Math.random() * 10000000) + 
+            "&dth=3" + 
+            "&hl=pt-BR" + 
+            "&vconp=0" + 
+            "&vid_d=120" + 
+            "&wta=1" + 
+            "&cust_params=mid%3D" + mediaId + "%26uis%3Dfalse%26app_source%3Drecord_nam";
+    }
+
+    function setupEnvironment() {
+        var hostElement = document.getElementById(containerId);
+        if (!hostElement) return;
+
+        hostElement.innerHTML = '';
+        hostElement.style.position = 'relative';
+        hostElement.style.paddingBottom = '56.25%'; // 16:9
+        hostElement.style.height = '0';
+        hostElement.style.overflow = 'hidden';
+
+        var vastUrl = buildVastRequest();
+
+        if (mediaFormat === 'youtube') {
+            hostElement.innerHTML = 
+                '<iframe id="frame-'+containerId+'" src="'+mediaSrc+'" style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;" allowfullscreen></iframe>' +
+                '<video id="vjs-'+containerId+'" class="video-js vjs-default-skin" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" playsinline controls></video>';
+            
+            var playerInstance = videojs('vjs-'+containerId, { controls: true, preload: 'auto' });
+            
+            playerInstance.ima({ id: 'vjs-'+containerId, adTagUrl: vastUrl });
+            
+            playerInstance.on('adsready', function() {
+                document.getElementById('vjs-'+containerId).style.pointerEvents = 'auto';
+            });
+            playerInstance.on('adend', function() {
+                document.getElementById('vjs-'+containerId).style.pointerEvents = 'none';
+            });
+            
+            playerInstance.ima.requestAds();
+            
+        } else {
+            hostElement.innerHTML = '<video id="vjs-'+containerId+'" class="video-js vjs-default-skin vjs-big-play-centered" style="position:absolute; top:0; left:0; width:100%; height:100%;" controls playsinline><source src="'+mediaSrc+'" type="video/mp4"></video>';
+            
+            var playerInstance = videojs('vjs-'+containerId);
+            playerInstance.ima({ id: 'vjs-'+containerId, adTagUrl: vastUrl });
+            playerInstance.ima.requestAds();
+        }
+    }
+
+    function injectScript(url, callback) {
+        var script = document.createElement('script');
+        script.src = url;
+        script.onload = callback;
+        document.head.appendChild(script);
+    }
+    
+    function injectStyle(url) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+        document.head.appendChild(link);
+    }
+
+    if (typeof videojs === 'undefined') {
+        injectStyle('https://vjs.zencdn.net/8.6.1/video-js.css');
+        injectStyle('https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/2.2.0/videojs.ima.css');
+        
+        injectScript('https://vjs.zencdn.net/8.6.1/video.min.js', function() {
+            injectScript('https://imasdk.googleapis.com/js/sdkloader/ima3.js', function() {
+                injectScript('https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/7.3.2/videojs-contrib-ads.min.js', function() {
+                    injectScript('https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/2.2.0/videojs.ima.min.js', function() {
+                        setupEnvironment();
+                    });
+                });
+            });
+        });
+    } else {
+        setupEnvironment();
+    }
+})();
+<\/script>`;
+
+            // Exibe a interface de resultados
+            document.getElementById('output-empty').classList.add('hidden');
+            document.getElementById('output-results').classList.remove('hidden');
+            document.getElementById('output-results').classList.add('flex');
+
+            // Imprime os códigos
+            document.getElementById('code-html').textContent = htmlPayload;
+            document.getElementById('code-js').textContent = jsPayload;
+            
+            // Força a aba preview a aparecer ativada na hora de gerar
+            switchSubTab('preview');
+
+            // --- EXECUÇÃO DO LIVE PREVIEW ---
+            const previewBox = document.getElementById('live-preview-container');
+            previewBox.innerHTML = htmlPayload; // Injeta o placeholder gerado
+            
+            // Remove scripts antigos de execução para manter DOM limpo
+            const oldRunner = document.getElementById('preview-runner');
+            if (oldRunner) oldRunner.remove();
+
+            // Pega o código gerado, remove as tags <script> visuais, e executa diretamente no DOM
+            const rawJsLogic = jsPayload.replace(/<script>/, '').replace(/<\/script>/, '');
+            const scriptElement = document.createElement('script');
+            scriptElement.id = 'preview-runner';
+            scriptElement.textContent = rawJsLogic;
+            document.body.appendChild(scriptElement);
+        }
+
+        // Função utilitária para cópia de código
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const originalText = btn.innerText;
+                btn.innerText = 'Copiado!';
+                btn.classList.replace('text-gray-700', 'text-emerald-600');
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.replace('text-emerald-600', 'text-gray-700');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
